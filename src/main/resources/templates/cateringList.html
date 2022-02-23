@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/web/thymeleaf/layout"
+      layout:decorate="/common/layout/base">
+<head>
+    <meta charset="UTF-8">
+    <script src='https://code.jquery.com/jquery-3.1.0.min.js'></script>
+    <script src="/js/catering.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            zoom: 0.75;
+        }
+        .spanStyle {
+            text-align: center;
+        }
+        .labelStyle {
+            margin-left: 1.8%;
+        }
+        .inputFieldStyle {
+            margin-left: -5.90%;
+            width: 100%;
+            height: 32px;
+        }
+        .wrapper {
+            text-align: center;
+        }
+        .inputWidth{
+            width: 100%;
+        }
+    </style>
+</head>
+
+<div layout:fragment="content">
+
+<div class="container">
+    <div id="scroll" class="">
+        <div class="x_panel">
+            <div align="center"><h2><b>Catering List</b></h2></div>
+            <form action="#" th:action="@{/collection/getCateringList}" th:object="${cateringList}" method="get" id="cateringListForm">
+                </br>
+                <fieldset class="form-group">
+                    <div class="form-group row">
+                        <label for="catNameId" class="col-sm-2 col-form-label"><h5>Caterer Name/Id</h5></label>
+                        <div class="col-sm-4">
+                            <td>
+                                <select id="catNameId" name="catNameId" class="form-control">
+                                    <option value="1">Classic</option>
+                                    <option value="2">Mid Level</option>
+                                    <option value="3">Premium</option>
+                                </select>
+                            </td>
+                        </div>
+                        <label for="cityName" class="col-sm-2 col-form-label"><h5>City Name</h5></label>
+                        <div class="col-sm-4">
+                            <td>
+                                <select id="cityName" name="cityName" class="form-control">
+                                    <option value="1">Dhaka</option>
+                                    <option value="2">Newyork</option>
+                                    <option value="3">Westin</option>
+                                    <option value="4">Mac street</option>
+                                </select>
+                            </td>
+                        </div>
+                    </div>
+                <div class="form-group row">
+                    <div class="col-sm-5"></div>
+                    <button type="submit" id="add_button"  class="btn btn-success">Find</button>
+                    <button type="button" id="refresh_button" onclick="window.location.reload();" class="btn btn-primary">Refresh</button>
+                </div>
+                </fieldset>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<div class="x_panel">
+    <div class="container">
+        <div class="table-responsive">
+            <table id="dataTable"  class="table table-bordered table-hover table-condensed">
+                <thead>
+                <tr>
+                    <th>Catere Type</th>
+                    <th>Food Menu</th>
+                    <th>VAt</th>
+                    <th>Billing Location</th>
+                    <th>Order Delivery Date</th>
+                    <th style="text-align:center;">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="catList : ${cateringList}">
+                    <td th:text="${catList[0]}"></td>
+                    <td th:text="${catList[2]}"></td>
+                    <td th:text="${catList[3]}"></td>
+                    <td th:text="${catList[4]}"></td>
+                    <td th:text="${#dates.format(catList[5], 'dd/MM/yyyy')}"></td>
+                    <td>
+                        <div class="wrapper">
+                        <button type="button" id="refres_button" th:value="${insDoc[0]}" onclick="getCaterinfList();" class="btn btn-success">Approve</button>
+                        </div>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+<div layout:fragment="script">
+
+   
+
+    <script>
+
+        $(document).ready(function () {
+
+            $( "#collFromDate" ).datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true
+            });
+            $( "#collToDate" ).datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true
+            });
+
+            var table = $('#dataTable').DataTable({
+                /*"columnDefs": [
+                    { "targets": [0], "searchable": false }
+                ]*/
+            });
+            $(document).ready(function () {
+
+
+                $('#dataTable tbody').on('click', '#edit', function () {
+
+                    var curRow = $(this).closest('tr');
+                    var col1 = curRow.find('td:eq(0)').text();
+                    var col2 = curRow.find('td:eq(1)').text();
+                    var col3 = curRow.find('td:eq(2)').text();
+                    var col4 = curRow.find('td:eq(3)').text();
+                    var col5 = curRow.find('td:eq(4)').text();
+
+
+
+
+                    $('#cateringType').val(col1);
+                    $('#billDate').val(col2);
+                    $('#FoodMenu').val(col3);
+                    $('#vat').val(col4);
+                    $('#billDate').val(col5);
+                    //scroll up
+
+                    $('html, body').animate({
+                        scrollTop: $('#scroll').offset().top
+                    }, 500);
+
+                });
+
+            });
+
+
+        });
+
+    </script>
+
+</div>
+
+</html>

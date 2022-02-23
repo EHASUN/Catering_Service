@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorator="common/layout/base">
+
+<div layout:fragment="content">
+
+    <div class="x_panel">
+        <div align="center"><h2><b>Catering Service</b></h2></div>
+        <hr>
+        <input type="hidden" name="catId" id="catId" value="">
+        <form action="#" method="post" name="cateringForm" id="cateringFormId">
+            <div class="item form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="cateringType">
+                    Catering Type
+                </label>
+                <div style="margin-bottom:15px;" class="col-md-8 col-sm-8 col-xs-12">
+                    <select class="form-control" id="cateringType">
+                        <option th:value="0">classic</option>
+                        <option th:value="0">mid level</option>
+                        <option th:value="1">Premium</option>
+                    </select>
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="foodMenu">
+                    Food Menu<span class="mandatory">*</span>
+                </label>
+                <div style="margin-bottom:15px;" class="col-md-8 col-sm-8 col-xs-12">
+                    <select class="form-control" id="foodMenu">
+                        <option th:value="-1">--Select Food menu--</option>
+                        <option th:value="c">Thai</option>
+                        <option th:value="b">Indian</option>
+                        <option th:value="p">Western</option>
+                        <option th:value="a">Vegetable</option>
+                    </select>
+                    <span  class="errMsg" id="err_foodMenu"></span>
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="orderPlaceLocation">
+                    Order Place Location
+                </label>
+                <div style="margin-bottom:15px;" class="col-md-8 col-sm-8 col-xs-12">
+                    <select class="form-control" id="orderPlaceLocation">
+                        <option th:value="-1">--Select Country--</option>
+                        <option th:value="0">Bangladesh</option>
+                        <option th:value="0">Mayanmar</option>
+                        <option th:value="1">USA</option>
+                    </select>
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="billingDate">
+                    Billing Date<span class="mandatory">*</span>
+                </label>
+                <div style="margin-bottom:15px;" class="col-md-8 col-sm-8 col-xs-12">
+                    <input class="form-control col-md-7 col-xs-12 datepicker"
+                           name="billingDate" id="billingDate"
+                    />
+                    <span  class="errMsg" id="err_billingDate"></span>
+                </div>
+            </div>
+            <div class="item form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="minimumbillingAmount">
+                    Minimum Billing Amount(Tk)
+                </label>
+                <div style="margin-bottom:15px;" class="col-md-8 col-sm-8 col-xs-12">
+                    <input readonly class="form-control col-md-7 col-xs-12"
+                           name="minimumbillingAmount" id="minimumbillingAmount" value="500.00"
+                    />
+                    <span  class="errMsg" id="err_minimumbillingAmount"></span>
+                </div>
+            </div>
+            
+            <div class="item form-group">
+                <label class="control-label col-md-4 col-sm-4 col-xs-12" for="deductionRate">
+                    Tax Rate(%)
+                </label>
+                <div style="margin-bottom:15px;" class="col-md-8 col-sm-8 col-xs-12">
+                    <input readonly class="form-control col-md-7 col-xs-12"
+                           name="taxRate" id="taxRate" value="5.00"
+                    />
+                    <span  class="errMsg" id="err_taxRate"></span>
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+
+<div layout:fragment="script">
+    <script src="/js/catering.js"></script>
+</div>
+<div layout:fragment="css">
+    <style>
+        label, table {
+            color: #555;
+            /*background: #251577;*/
+            font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
+            font-size: 12px;
+            font-weight: 300;
+            line-height: 1.371;
+        }
+
+        .wrapper {
+            text-align: center;
+        }
+
+    
+        .tBodyClass {
+            /*display:inline-block;*/
+            overflow: auto;
+            /*height:100px;*/
+            /*width: 660px;*/
+        }
+
+        td {
+            padding: 5px;
+        }
+
+        .label-align {
+            padding-top: 4px;
+
+            color: #251577;
+            display: inline-block;
+            max-width: 100%;
+            margin-bottom: 5px;
+            font-weight: 700;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: .25em .4em;
+            font-size: 100% !important;
+            font-weight: 700;
+            line-height: 1;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: .25rem;
+            transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+        }
+
+        #mtd tr:hover, tr.selected {
+            background-color: #f5f5f5;
+
+            cursor: pointer;
+
+        }
+
+        .custom-line {
+            border-bottom: 2px solid;
+        }
+
+        .cust-lbl-late-fee {
+            color: red;
+            font-weight: 600;
+        }
+
+        .cust-lbl-late-fee-waiver {
+            color: #1900ff;
+            font-weight: 600;
+        }
+
+        .cust-lbl-payable-amt {
+            color: #ffcc00;
+            font-weight: 700;
+        }
+
+        .amt-val-for-late-total-payable,
+        .amt-val-for-late-total-fee-waiver,
+        .amt-val-for-late-total-fee,
+        .amt-val-for-total-sp-premium,
+        .amt-val-for-total-sb-premium,
+        .amt-val-for-total-premium {
+            text-align: right;
+        }
+
+        .payment-det-section {
+            display: none;
+        }
+        .selection{
+            cursor: pointer;
+        }
+    </style>
+</div>
